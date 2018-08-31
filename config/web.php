@@ -53,6 +53,7 @@ $config = [
         */
     ],
     'params' => $params,
+	'defaultRoute' => 'amazon/analyzer',
 ];
 
 if (YII_ENV_DEV) {

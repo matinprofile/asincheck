@@ -12,7 +12,8 @@ use app\models\amazon\Product;
 class AnalyzerController extends Controller
 {
 	function actionIndex(){
-		return "This is Amazon Product Analyzer &lt;APA>.";
+		$model = new Product();
+        return $this->render('index',['model'=>$model]);
 	}
 	
 	function actionAnalyze(){

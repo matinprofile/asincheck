@@ -72,12 +72,25 @@ class Product extends Model
 	public function calculateKPIs(){
 		$this->kpi__amount_of_reviews = $this->reviews;
 		$this->kpi__length_of_title = strlen($this->product_title);
-		
+		/*
 		$dom = new \DOMDocument();
 		libxml_use_internal_errors(true);
 		$dom->loadHTML($this->bullet_points);
 		$this->kpi__amount_of_bullet_points = $dom->getElementsByTagName('li')->length;
-
+		*/
+		$this->kpi__amount_of_bullet_points = count($this->bullet_points);
+		
+		$bullet_point_array = array();
+		/*
+		foreach($dom->getElementsByTagName('li') as $li){
+			 $bullet_point_array[] = strlen($li->nodeValue);
+		}
+		*/
+		foreach($this->bullet_points as $li){
+			 $bullet_point_array[] = strlen(trim($li));
+		}
+		$this->kpi__length_of_each_bullet_point = $bullet_point_array;
+		
 		$this->kpi__length_of_description = strlen($this->product_description);
 	}
 	
@@ -96,6 +109,13 @@ class Product extends Model
 			$this->kpi_status__amount_of_bullet_points = false;
 		else
 			$this->kpi_status__amount_of_bullet_points = true;
+		
+		$this->kpi_status__length_of_each_bullet_point = true;
+		foreach($this->kpi__length_of_each_bullet_point as $li){
+			if($li < 150 or $li > 300)
+				$this->kpi_status__length_of_each_bullet_point = false;
+		}
+		
 		
 		if($this->kpi__length_of_description < 1500 )
 			$this->kpi_status__length_of_description = false;
@@ -156,15 +176,15 @@ class Product extends Model
 		$dom->loadHTML($html);
 
 		/* Product Title */
-		$this->product_title = $this->getInnerHTML($dom, "productTitle");
+		$this->product_title = strip_tags(trim($this->getInnerHTML($dom, "productTitle")));
 		/* Product Title */
 
 		/* Bullet Point */
-		$this->bullet_points = $this->getInnerHTML($dom, "feature-bullets");
+		$this->bullet_points =  $this->getElementsByClass($dom, "feature-bullets", "span", "a-list-item");
 		/* Bullet Point */
 		
 		/* Product description */
-		$this->product_description = $this->getInnerHTML($dom, "productDescription");
+		$this->product_description = strip_tags(trim($this->getInnerHTML($dom, "productDescription")));
 		/* Product description */
 		
 		/* Product Image */
@@ -195,4 +215,23 @@ class Product extends Model
 			return "";
 		}
 	}
+	function getElementsByClass($dom, $selector, $tagName, $className) {
+		$parentNode = $dom->getElementById($selector);
+		$nodes=array();
+
+		$childNodeList = $parentNode->getElementsByTagName($tagName);
+		for ($i = 0; $i < $childNodeList->length; $i++) {
+			$temp = $childNodeList->item($i);
+			if (stripos($temp->getAttribute('class'), $className) !== false) {
+				$innerHTML= '';
+				$children = $temp->childNodes;
+				foreach ($children as $child)
+				{
+					$innerHTML .= $child->ownerDocument->saveXML( $child );
+				}
+				$nodes[] = $innerHTML;
+			}
+		}
+		return $nodes;
+	}	
 }
