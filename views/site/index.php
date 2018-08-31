@@ -10,7 +10,14 @@ $this->title = 'My Yii Application';
 ?>
 
 <div class="site-index">
-
+<?php
+/*
+	ECHO 'Authorization: ' . rand();
+	foreach($_SERVER as $header  => $value){
+		echo "$header: $value <br>\n";
+	}
+*/
+?>
     <div class="jumbotron">
         <h1>Congratulations!</h1>
 
@@ -19,16 +26,14 @@ $this->title = 'My Yii Application';
         <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
     </div>
     <div class="jumbotron">
-        <h3>ASIN Check</h3>		
-		<form id="check-form" action="index.php?r=check/form" method="post" data-toggle="validator" >
-			<input type="hidden" name="_csrf" value="fPotcoIGYd3gNP-ZU2SjejVoSvCkvTEK3_zOX8mFc6cxkRwa-GkviK1MucZnMcUlRzIgs8fVf0yXi4lp8OYW8A==">
+        <h3>ASIN Analyzer</h3>		
+        <?php $form = ActiveForm::begin(['id' => 'analyzer-form', 'action' => 'index.php?r=amazon/analyzer/analyze']); ?>
+            <?= $form->field($model, 'asin')->textInput()->hint('Please input your ASIN (Exactly 10 chars, a-z,A-z,0-9)') ?>
 			<div class="form-group">
-				<input type="text" id="checkform-asin" class="form-control" name="CheckForm[asin]" required="" placeholder="Please input your ASIN (Exactly 10 chars, a-z,A-z,0-9)" pattern="^[_A-z0-9]{10,10}$" >
+				<?= Html::submitButton('Analyze', ['class' => 'btn btn-primary', 'name' => 'analyze-button']) ?>
 			</div>
-			<div class="form-group">
-				<button type="submit" class="btn btn-primary" name="check-button">Submit</button>
-			</div>
-		</form>
+        <?php ActiveForm::end(); ?>
+
 		
     </div>
 

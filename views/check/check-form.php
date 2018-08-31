@@ -22,6 +22,7 @@ use yii\captcha\Captcha;
 	<div class="col-lg-6" >
 	</div>
 </div>
+
 <div class="row">
 	<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">				
 		<!-- PRICE ITEM -->
@@ -68,13 +69,15 @@ use yii\captcha\Captcha;
 				prettyResponse += "<tr><th>ASIN</th><td>" + myList.data['asin'] + "</td><th>Brand</th><td>" + myList.data['brand'] + "</td></tr>";
 				prettyResponse += "<tr><th>Main Category</th><td>" + myList.data['parent_asin'] + "</td><th>Color</th><td>" + myList.data['color'] + "</td></tr>";
 				prettyResponse += "<tr><th>Sales Rank</th><td>" + myList.data['salesrank'] + "</td><th>Size</th><td>" + myList.data['size'] + "</td></tr>";
-				prettyResponse += "<tr><th>Price</th><td>" + myList.data['price'] + "</td><th>Keyword Found</th><td>" + myList.data['rankings'].length + "</td></tr>";
 				prettyResponse += "<tr><th>Prime</th><td>" + myList.data['ean'] + "</td><th>Visibility Index</th><td>" + myList.data['brand'] + "</td></tr>";
-				prettyResponse += "<tr><td colspan='3' ><table class='table table-dark' ><tr><th>Last Date</th><th>Last Position</th>";
-				for(var i = 0; i < myList.data['rankings'].length; i++){
-					prettyResponse += "<tr><td>" +  myList.data['rankings'][i]['last_date'] + "</td><td>" +  myList.data['rankings'][i]['last_position'] + "</td><td>" +  myList.data['rankings'][i]['keyword'] + "</td></tr>";
+				if(myList.data['rankings']){
+					prettyResponse += "<tr><th>Price</th><td>" + myList.data['price'] + "</td><th>Keyword Found</th><td>" + myList.data['rankings'].length + "</td></tr>";
+					prettyResponse += "<tr><td colspan='3' ><table class='table table-dark' ><tr><th>Last Date</th><th>Last Position</th>";
+					for(var i = 0; i < myList.data['rankings'].length; i++){
+						prettyResponse += "<tr><td>" +  myList.data['rankings'][i]['last_date'] + "</td><td>" +  myList.data['rankings'][i]['last_position'] + "</td><td>" +  myList.data['rankings'][i]['keyword'] + "</td></tr>";
+					}
+					prettyResponse += "</td></tr></table>";
 				}
-				prettyResponse += "</td></tr></table>";
 				prettyResponse += "</table>";
 				
 				$('#server-response').html(prettyResponse);

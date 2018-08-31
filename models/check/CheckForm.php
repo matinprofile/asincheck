@@ -11,8 +11,13 @@ use yii\base\Model;
 class CheckForm extends Model
 {
     public $asin;
+    public $useragent;
 
 	public function getASIN(){
 		return $asin;
+	}
+	
+	public function getUserAgent(){
+		return $useragent;
 	}
 }
