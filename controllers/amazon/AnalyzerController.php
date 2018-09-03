@@ -18,12 +18,14 @@ class AnalyzerController extends Controller
 	
 	function actionAnalyze(){
 		$product = new Product();
+		$model = new Product();
+		
 		if($product->load(Yii::$app->request->post())){
 			$product->informations();
 		}
 		
         return $this->render('analyze-result', [
-			'product' => $product,
+			'model' => $model, 'product' => $product,
         ]);
 	}
 }

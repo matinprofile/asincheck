@@ -108,7 +108,7 @@ class CheckController extends Controller
 		fclose($myfile);	
 		//$html = $this->parse($html,"acrCustomerReviewText");
 		return $this->render('html', [
-			'html' => $html, 
+			'html' => $this->query($html,"id=\"nav-subnav"), 
 		]);
 	}
 
@@ -118,4 +118,17 @@ class CheckController extends Controller
 			fclose($myfile);	
 			return "saveed";
 		}
+		
+		public function query($html, $selector){
+			//$html = strtolower($hmtl);
+			//$selector = strtolower($selector);
+			$start_pos = strpos($html,$selector);
+			$end_pos = strpos($html,"<", $start_pos);
+			return substr($html, $start_pos, $end_pos - $start_pos);			
+		}
+		
+		public function queryIsThere($html, $selector){
+			return (strpos($html,$selector)? "T": "F");			
+		}
+
 }

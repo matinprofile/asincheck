@@ -1,4 +1,26 @@
+<?php
+use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use yii\captcha\Captcha;
+
+/* @var $this yii\web\View */
+
+$this->title = 'APA Application';
+
+?>
+
 <div class="row">
+	<div class="site-index">
+		<div class="jumbotron">
+			<h3>ASIN Analyzer</h3>		
+			<?php $form = ActiveForm::begin(['id' => 'analyzer-form', 'action' => 'index.php?r=amazon/analyzer/analyze']); ?>
+				<?= $form->field($model, 'asin')->textInput()->hint('Please input your ASIN (Exactly 10 chars, a-z,A-z,0-9)') ?>
+				<div class="form-group">
+					<?= Html::submitButton('Analyze', ['class' => 'btn btn-primary', 'name' => 'analyze-button']) ?>
+				</div>
+			<?php ActiveForm::end(); ?>		
+		</div>
+	</div>
 	<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">				
 		<!-- PRICE ITEM -->
 		<div class="panel price panel-red">
@@ -26,9 +48,21 @@
 		<table class='table table-dark' >
 			<tr><th>Title</th><td col='3' ><?php echo $product->product_title; ?></td></tr>
 			<tr><th>ASIN</th><td><?php echo $product->asin; ?></td><th>Brand</th><td><?php echo $product->brand; ?></td></tr>
-			<tr><th>Main Category</th><td><?php echo $product->category; ?></td><th>Color</th><td><?php echo $product->color; ?></td></tr>
+			<tr><th>Main Category</th><td><?php echo $product->category[0]; ?></td><th>Color</th><td><?php echo $product->color; ?></td></tr>
 			<tr><th>Sales Rank</th><td><?php echo $product->salesrank; ?></td><th>Size</th><td><?php echo $product->size; ?></td></tr>
+			<tr><th>Price</th><td><?php echo $product->price; ?></td><th>Keywords Founded</th><td><?php echo count($product->rankings); ?></td></tr>
 			<tr><th>Prime</th><td><?php echo $product->prime; ?></td><th>Visibility Index</th><td><?php echo $product->visibility_index; ?></td></tr>
+		</table>
+		<table class='table table-dark' >
+			<tr><th>Keywords</th><td col='3' ><?php
+				$ranking = $product->rankings;
+				//echo $ranking[0]->keyword;
+			
+				for($i = 0; $i < count($product->rankings); $i++){
+					echo $ranking[$i]->keyword . "[<i>position:" . $ranking[$i]->last_position . "</li>],&nbsp;";
+				}
+				
+			?></td></tr>
 		</table>
 
 

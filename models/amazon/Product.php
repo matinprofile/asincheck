@@ -5,6 +5,9 @@ namespace app\models\amazon;
 use Yii;
 use yii\base\Model;
 
+/**
+ * Product is the model behind the analyzer-form.
+ */
 class Product extends Model
 {
     public $asin;
@@ -145,7 +148,7 @@ class Product extends Model
 		$this->color = (empty($out->data->color) ? "NA": $out->data->color);
 		$this->ean = (empty($out->data->ean) ? "NA": $out->data->ean);
 		$this->similarproducts = (empty($out->data->similarproducts) ? "NA": $out->data->similarproducts);
-		$this->rankings = (!isset($out->data->rankings) ? "NA": $out->data->rankings);
+		$this->rankings = (!isset($out->data->rankings) ? array(): $out->data->rankings);
 	}
 	
 	public function get_page(){
@@ -199,6 +202,20 @@ class Product extends Model
 		$this->bestseller_rank = $this->getInnerHTML($dom, "zeitgeistBadge_feature_div");
 		/* Bestseller Rank */
 
+		/* Prime */
+		$this->prime = ($this->queryIsThere($html, "primeUpsellPopover") ? "Yes" : "No");
+		/* Prime */
+		
+		/* Main Category */
+		$this->category = $this->getElementsByClass($dom, "nav-subnav","span","nav-a-content");
+		/* Main Category */
+		
+	}
+	
+	public function query($html, $text){
+	}
+	public function queryIsThere($html, $selector){
+		return (strpos($html,$selector)? true: false);			
 	}
 	
 	public function getInnerHTML($dom, $selector){
