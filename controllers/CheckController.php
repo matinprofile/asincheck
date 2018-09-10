@@ -106,10 +106,32 @@ class CheckController extends Controller
 		$myfile = fopen("outhtml.txt", "r") or die("Unable to open file!");
 		$html = fread($myfile,filesize("outhtml.txt"));
 		fclose($myfile);	
-		//$html = $this->parse($html,"acrCustomerReviewText");
-		return $this->render('html', [
-			'html' => $this->query($html,"id=\"nav-subnav"), 
-		]);
+		$dom = new \DOMDocument();
+
+		libxml_use_internal_errors(true);
+		# loadHTML might throw because of invalid HTML in the page.
+		$dom->loadHTML($html);
+		/* Product Title */
+		$product_title = $this->getInnerHTML($dom, "productTitle");
+		/* Product Title */
+
+		/* Customer Review */
+		$result_array = array();
+		$reviews = str_replace(",","",str_replace("customer reviews","",$this->getInnerHTML($dom, "acrCustomerReviewText")));
+		foreach ($reviews as $each_review) {
+			  $result_array[] = (int) $each_review;
+		}		
+		$reviews = max($result_array);
+		/* Customer Review */
+		
+		$country=file_get_contents('http://api.hostip.info/get_html.php?ip=');
+		echo $country;
+
+		// Reformat the data returned (Keep only country and country abbr.)
+		$only_country=explode (" ", $country);
+
+		return	 "Country : ".$only_country[1]." ".substr($only_country[2],0,4);
+
 	}
 
 		public function actionSave(){
@@ -131,4 +153,54 @@ class CheckController extends Controller
 			return (strpos($html,$selector)? "T": "F");			
 		}
 
+	public function getInnerHTML($dom, $selector){
+		$xpath = new \DOMXpath($dom);
+		$nodes = $xpath->query("//*[@id='" . $selector . "']");
+
+		$innerHTML = "";
+		if(!is_null($nodes)){
+			foreach ($nodes as $node) {
+				$innerHTML[] = $node->nodeValue;
+			}
+		}
+		if(is_array($innerHTML) & count($innerHTML) == 1){
+			$innerHTML = $innerHTML[0];
+		}
+		return $innerHTML;
+		/*
+		$node = $dom->getElementById($selector);
+		if(!is_null($node)){
+			$innerHTML= '';
+			$children = $node->childNodes;
+			foreach ($children as $child)
+			{
+				$innerHTML .= $child->ownerDocument->saveXML( $child );
+			}
+			return $innerHTML;
+		}else{
+			return "";
+		}
+		*/
+	}
+	function getElementsByClass($dom, $selector, $tagName, $className) {
+		$parentNode = $dom->getElementById($selector);
+		$nodes=array();
+
+		$childNodeList = $parentNode->getElementsByTagName($tagName);
+		for ($i = 0; $i < $childNodeList->length; $i++) {
+			$temp = $childNodeList->item($i);
+			if (stripos($temp->getAttribute('class'), $className) !== false) {
+				$innerHTML= '';
+				$children = $temp->childNodes;
+				foreach ($children as $child)
+				{
+					$innerHTML .= $child->ownerDocument->saveXML( $child );
+				}
+				$nodes[] = $innerHTML;
+			}
+		}
+		return $nodes;
+	}	
+	
+		
 }

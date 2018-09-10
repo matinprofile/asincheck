@@ -10,6 +10,8 @@ use yii\base\Model;
  */
 class Product extends Model
 {
+	public $domain;
+	
     public $asin;
 	public $parent_asin;
 	public $title;
@@ -22,6 +24,7 @@ class Product extends Model
 	public $ean;
 	public $similarproducts;
 	public $rankings;
+	public $visindex;
 	
 	public $product_title;
 	public $bullet_points;
@@ -32,7 +35,6 @@ class Product extends Model
 	public $bestseller_rank;
 	public $category;
 	public $prime;
-	public $visibility_index;
 	
 	public $kpi__amount_of_reviews;
 	public $kpi__length_of_title;
@@ -53,6 +55,7 @@ class Product extends Model
 	{
 		return [
 		'asin' => 'ASIN',
+		'domain' => 'Domain',
 		];
 	}
 	
@@ -61,6 +64,7 @@ class Product extends Model
 			['asin', 'required'],
 			['asin', 'string', 'min' => 10, 'max'=>10],				
 			['asin', 'match', 'pattern' => '/^[a-zA-Z0-9\s]+$/',],				
+			['domain', 'required'],
 		];
 	}
 	
@@ -69,7 +73,6 @@ class Product extends Model
 		$this->get_page();
 		$this->calculateKPIs();
 		$this->analyzeKPIs();
-		
 	}
 	
 	public function calculateKPIs(){
@@ -149,10 +152,14 @@ class Product extends Model
 		$this->ean = (empty($out->data->ean) ? "NA": $out->data->ean);
 		$this->similarproducts = (empty($out->data->similarproducts) ? "NA": $out->data->similarproducts);
 		$this->rankings = (!isset($out->data->rankings) ? array(): $out->data->rankings);
+		$this->visindex = (empty($out->data->visindex) ? "NA": $out->data->visindex);
+	}
+	
+	public function get_dom(){
 	}
 	
 	public function get_page(){
-		$uri = 'https://www.amazon.com/dp/' . $this->asin;
+		$uri = 'https://www.amazon.' . $this->domain . '/dp/' . $this->asin;
 		$ch = curl_init($uri);
 		curl_setopt_array($ch, array(
 			CURLOPT_HTTPHEADER  => array('Authorization: ' . rand()),
@@ -176,7 +183,8 @@ class Product extends Model
 
 		libxml_use_internal_errors(true);
 		# loadHTML might throw because of invalid HTML in the page.
-		$dom->loadHTML($html);
+		$html_without_null_chars = str_replace("\0", '', $html);
+		$dom->loadHTML($html_without_null_chars);
 
 		/* Product Title */
 		$this->product_title = strip_tags(trim($this->getInnerHTML($dom, "productTitle")));
@@ -195,9 +203,18 @@ class Product extends Model
 		/* Product Image */
 
 		/* Customer Review */
-		$this->reviews = str_replace(",","",str_replace("customer reviews","",$this->getInnerHTML($dom, "acrCustomerReviewText")));
+		$result_array = array();
+		if($this->domain == 'de'){
+			$reviews = str_replace(",","",str_replace("Kundenrezensionen","",$this->getInnerHTML($dom, "acrCustomerReviewText")));
+		}else{
+			$reviews = str_replace(",","",str_replace("customer reviews","",$this->getInnerHTML($dom, "acrCustomerReviewText")));
+		}
+		foreach ($reviews as $each_review) {
+			  $result_array[] = (int) $each_review;
+		}		
+		$this->reviews = max($result_array);
 		/* Customer Review */
-
+		
 		/* Bestseller Rank */
 		$this->bestseller_rank = $this->getInnerHTML($dom, "zeitgeistBadge_feature_div");
 		/* Bestseller Rank */
@@ -219,6 +236,21 @@ class Product extends Model
 	}
 	
 	public function getInnerHTML($dom, $selector){
+		$xpath = new \DOMXpath($dom);
+		$nodes = $xpath->query("//*[@id='" . $selector . "']");
+
+		$innerHTML = "";
+		if(!is_null($nodes)){
+			foreach ($nodes as $node) {
+				$innerHTML[] = $node->nodeValue;
+			}
+		}
+		if(is_array($innerHTML) & count($innerHTML) == 1){
+			$innerHTML = $innerHTML[0];
+		}
+		return $innerHTML;
+		
+		/*
 		$node = $dom->getElementById($selector);
 		if(!is_null($node)){
 			$innerHTML= '';
@@ -231,6 +263,7 @@ class Product extends Model
 		}else{
 			return "";
 		}
+		*/
 	}
 	function getElementsByClass($dom, $selector, $tagName, $className) {
 		$parentNode = $dom->getElementById($selector);
