@@ -279,15 +279,17 @@ class Product extends Model
 	}
 	function getElementsByClass($dom, $selector, $tagName, $className) {
 		$xpath = new \DOMXpath($dom);
-		$nodes = $xpath->query("//*[@id='" . $selector . "']//" . $tagName . "[@class='" . $className . "']");
+		$parent = $xpath->query("//*[@id='" . $selector . "']")->item(0);
+		$query = '$tagName[$class="$className"]';
+		$nodes = $xpath->query($query, $parent);
 		
-		$result = array();
-		if($nodes->length > 0){
-			foreach($nodes as $node){
-				$result[] = $node->nodeValue;
+		$elements = array();
+		if(!is_null($nodes)){
+			foreach ($nodes as $node) {
+				$elements[] = $node->nodeValue;
 			}
 		}
-		return $result;
+		return $elements;
 		
 		/*
 		$parentNode = $dom->getElementById($selector);

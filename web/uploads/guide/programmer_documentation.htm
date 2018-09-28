@@ -1,0 +1,191 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1256">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:8.0pt;
+	margin-left:0in;
+	line-height:107%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+a:link, span.MsoHyperlink
+	{color:#0563C1;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:#954F72;
+	text-decoration:underline;}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:8.0pt;
+	margin-left:.5in;
+	line-height:107%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListParagraphCxSpFirst, li.MsoListParagraphCxSpFirst, div.MsoListParagraphCxSpFirst
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	line-height:107%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListParagraphCxSpMiddle, li.MsoListParagraphCxSpMiddle, div.MsoListParagraphCxSpMiddle
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	line-height:107%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p.MsoListParagraphCxSpLast, li.MsoListParagraphCxSpLast, div.MsoListParagraphCxSpLast
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:8.0pt;
+	margin-left:.5in;
+	line-height:107%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+.MsoChpDefault
+	{font-family:"Calibri",sans-serif;}
+.MsoPapDefault
+	{margin-bottom:8.0pt;
+	line-height:107%;}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link="#0563C1" vlink="#954F72">
+
+<div class=WordSection1>
+
+<p class=MsoNormal><b>Programmer Documentation:</b></p>
+
+<p class=MsoNormal>This application developed by php, Yii 2 Framework and
+Bootstrap.</p>
+
+<p class=MsoNormal>In this document assumed that you have adapted for php and
+yii.</p>
+
+<p class=MsoNormal><b>Files structure:</b></p>
+
+<p class=MsoNormal>root</p>
+
+<p class=MsoNormal>|</p>
+
+<p class=MsoNormal>|----controllers</p>
+
+<p class=MsoNormal>|                              |</p>
+
+<p class=MsoNormal>|                              |-amazon</p>
+
+<p class=MsoNormal>|                                              |--AnalyzerController.php</p>
+
+<p class=MsoNormal>|                              </p>
+
+<p class=MsoNormal>|</p>
+
+<p class=MsoNormal>|----models</p>
+
+<p class=MsoNormal>|                              |-amazon</p>
+
+<p class=MsoNormal>|                                              |--Product.php</p>
+
+<p class=MsoNormal>|</p>
+
+<p class=MsoNormal>|</p>
+
+<p class=MsoNormal>|----views</p>
+
+<p class=MsoNormal>|                              |-amazon</p>
+
+<p class=MsoNormal>                                                |--analyzer</p>
+
+<p class=MsoNormal>                                                                |--analyze-result.php</p>
+
+<p class=MsoNormal>                                                                |--index.php</p>
+
+<p class=MsoNormal>As you know, Yii is a MVC framework. So our project is
+contained by three part. Model, View and Controller. These parts have own
+folders. In controllers, models and views folder, there is another main folder
+called <b>amazon. </b>this folder consist of some php script file.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal><b>Installation:</b></p>
+
+<p class=MsoNormal>Note : We assume that Yii was installed on your host.</p>
+
+<p class=MsoListParagraphCxSpFirst style='text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span dir=LTR></span>Copy <b>amazon</b> folders from <b>controllers</b>,
+<b>models</b> and <b>views</b> from module to yii controllers, models and views
+folder.</p>
+
+<p class=MsoListParagraphCxSpLast style='text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span dir=LTR></span>Set your default controller to
+“amazon/analyzer” by adding following code on “root/config/web.php”:</p>
+
+<p class=MsoNormal style='margin-left:.5in'>'defaultRoute' =&gt;
+'amazon/analyzer',</p>
+
+<p class=MsoNormal style='margin-left:.5in'>&nbsp;</p>
+
+<p class=MsoListParagraphCxSpFirst style='text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span dir=LTR></span>If you want to use this module in your site,
+you have two ways:</p>
+
+<p class=MsoListParagraphCxSpMiddle style='margin-left:1.0in;text-indent:-.25in'><span
+style='font-family:"Courier New"'>o<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+</span></span><span dir=LTR></span>Refer to default controller from your site
+like this:</p>
+
+<p class=MsoListParagraphCxSpMiddle style='margin-left:1.0in'>http://[your_domain]/[yii_root]/web/index.php?r=amazon/analyzer</p>
+
+<p class=MsoListParagraphCxSpMiddle style='margin-left:1.0in;text-indent:-.25in'><span
+style='font-family:"Courier New"'>o<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+</span></span><span dir=LTR></span><img width=511 height=568
+src="programmer_documentation_files/image001.png" align=left hspace=12
+vspace=5
+alt="&lt;form action=&quot;index.php?r=amazon/analyzer/analyze&quot; method=&quot;post&quot;&gt;&#13;&#10;	&lt;input type=&quot;hidden&quot; name=&quot;_csrf&quot; value=&quot;seNDPGsyO2LyNbWP5zJ2f5Q-1yoj9bjX0VwnO14szM_00hFUWUYIMa1E-sGfBzI4-H-nXnzH27GFbhRMFGPhig==&quot;&gt;            &#13;&#10;	&lt;div class=&quot;form-group field-product-asin required&quot;&gt;&#13;&#10;		&lt;label class=&quot;control-label&quot; for=&quot;product-asin&quot;&gt;ASIN&lt;/label&gt;&#13;&#10;		&lt;input type=&quot;text&quot; id=&quot;product-asin&quot; class=&quot;form-control&quot; name=&quot;Product[asin]&quot; aria-required=&quot;true&quot;&gt;&#13;&#10;		&lt;p class=&quot;help-block&quot;&gt;Please input your ASIN (Exactly 10 chars, a-z,A-z,0-9)&lt;/p&gt;&#13;&#10;		&lt;p class=&quot;help-block help-block-error&quot;&gt;&lt;/p&gt;&#13;&#10;	&lt;/div&gt;            &#13;&#10;	&lt;div class=&quot;form-group field-product-domain required&quot;&gt;&#13;&#10;		&lt;label class=&quot;control-label&quot; for=&quot;product-domain&quot;&gt;Domain&lt;/label&gt;&#13;&#10;		&lt;select id=&quot;product-domain&quot; class=&quot;form-control&quot; name=&quot;Product[domain]&quot; aria-required=&quot;true&quot;&gt;&#13;&#10;		&lt;option value=&quot;de&quot;&gt;.de&lt;/option&gt;&#13;&#10;		&lt;option value=&quot;com&quot;&gt;.com&lt;/option&gt;&#13;&#10;		&lt;/select&gt;&#13;&#10;		&lt;p class=&quot;help-block help-block-error&quot;&gt;&lt;/p&gt;	&#13;&#10;	&lt;/div&gt;			&#13;&#10;	&lt;div class=&quot;form-group&quot;&gt;&#13;&#10;		&lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot; name=&quot;analyze-button&quot;&gt;Analyze&lt;/button&gt;&#13;&#10;	&lt;/div&gt;&#13;&#10;&lt;/form&gt;		&#13;&#10;">Insert
+entry from inside of any page of your site that post submitted data to module
+controller like this:</p>
+
+<p class=MsoListParagraphCxSpLast style='margin-left:1.0in'>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

@@ -1906,7 +1906,7 @@ $Nav.declare('img.pixel', 'https://images-na.ssl-images-amazon.com/images/G/01/x
   <a href="#" class="nav-a" >
     <span class="nav-a-content">
       
-      
+      	Category
     </span>
   </a>
 

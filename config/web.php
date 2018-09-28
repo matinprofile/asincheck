@@ -24,7 +24,7 @@ $config = [
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'amazon/analyzer/error',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

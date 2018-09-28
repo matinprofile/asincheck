@@ -127,4 +127,25 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+	
+    /**
+     * Displays downoad page.
+     *
+     * @return string
+     */
+    public function actionDownload()
+    {
+        return $this->render('download');
+    }
+
+    /**
+     * Displays downoad page.
+     *
+     * @return string
+     */
+    public function actionDocument()
+    {
+        return $this->render('document');
+    }
+	
 }

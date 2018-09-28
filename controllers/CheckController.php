@@ -111,26 +111,12 @@ class CheckController extends Controller
 		libxml_use_internal_errors(true);
 		# loadHTML might throw because of invalid HTML in the page.
 		$dom->loadHTML($html);
-		/* Product Title */
-		$product_title = $this->getInnerHTML($dom, "productTitle");
-		/* Product Title */
 
-		/* Customer Review */
-		$result_array = array();
-		$reviews = str_replace(",","",str_replace("customer reviews","",$this->getInnerHTML($dom, "acrCustomerReviewText")));
-		foreach ($reviews as $each_review) {
-			  $result_array[] = (int) $each_review;
-		}		
-		$reviews = max($result_array);
-		/* Customer Review */
-		
-		$country=file_get_contents('http://api.hostip.info/get_html.php?ip=');
-		echo $country;
+		/* Main Category */
+		$category = $this->getElementsByClass($dom, "nav-subnav","span","nav-a-content");
+		/* Main Category */
 
-		// Reformat the data returned (Keep only country and country abbr.)
-		$only_country=explode (" ", $country);
-
-		return	 "Country : ".$only_country[1]." ".substr($only_country[2],0,4);
+		return	 "Category : " . $category[0];
 
 	}
 
@@ -182,25 +168,41 @@ class CheckController extends Controller
 		}
 		*/
 	}
+	
 	function getElementsByClass($dom, $selector, $tagName, $className) {
+		$xpath = new \DOMXpath($dom);
+		$nodes = $xpath->query("//*[@id='" . $selector . "']//" . $tagName . "[@class='" . $className . "']");
+		
+		$result = array();
+		if($nodes->length > 0){
+			foreach($nodes as $node){
+				$result[] = $node->nodeValue;
+			}
+		}
+		return $result;
+		
+		/*
 		$parentNode = $dom->getElementById($selector);
 		$nodes=array();
 
-		$childNodeList = $parentNode->getElementsByTagName($tagName);
-		for ($i = 0; $i < $childNodeList->length; $i++) {
-			$temp = $childNodeList->item($i);
-			if (stripos($temp->getAttribute('class'), $className) !== false) {
-				$innerHTML= '';
-				$children = $temp->childNodes;
-				foreach ($children as $child)
-				{
-					$innerHTML .= $child->ownerDocument->saveXML( $child );
+		if(!is_null($parentNode )){
+			$childNodeList = $parentNode->getElementsByTagName($tagName);
+			for ($i = 0; $i < $childNodeList->length; $i++) {
+				$temp = $childNodeList->item($i);
+				if (stripos($temp->getAttribute('class'), $className) !== false) {
+					$innerHTML= '';
+					$children = $temp->childNodes;
+					foreach ($children as $child)
+					{
+						$innerHTML .= $child->ownerDocument->saveXML( $child );
+					}
+					$nodes[] = $innerHTML;
 				}
-				$nodes[] = $innerHTML;
 			}
 		}
+		
 		return $nodes;
+		*/
 	}	
-	
 		
 }

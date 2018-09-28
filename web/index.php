@@ -4,6 +4,9 @@
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', 'dev');
 
+define('YII_ENABLE_ERROR_HANDLER', true);
+define('YII_ENBLE_EXCEPTION_HANDLER',true);
+
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 
